@@ -95,21 +95,21 @@ namespace merkle
     uint8_t bytes[SIZE];
 
     /// @brief Constructs a Hash with all bytes set to zero
-    HashT<SIZE>()
+    HashT()
     {
       std::fill(bytes, bytes + SIZE, 0);
     }
 
     /// @brief Constructs a Hash from a byte buffer
     /// @param bytes Buffer with hash value
-    HashT<SIZE>(const uint8_t* bytes)
+    HashT(const uint8_t* bytes)
     {
       std::copy(bytes, bytes + SIZE, this->bytes);
     }
 
     /// @brief Constructs a Hash from a string
     /// @param s String to read the hash value from
-    HashT<SIZE>(const std::string& s)
+    HashT(const std::string& s)
     {
       if (s.length() != 2 * SIZE)
         throw std::runtime_error("invalid hash string");
@@ -123,7 +123,7 @@ namespace merkle
 
     /// @brief Deserialises a Hash from a vector of bytes
     /// @param bytes Vector to read the hash value from
-    HashT<SIZE>(const std::vector<uint8_t>& bytes)
+    HashT(const std::vector<uint8_t>& bytes)
     {
       if (bytes.size() < SIZE)
         throw std::runtime_error("not enough bytes");
@@ -133,7 +133,7 @@ namespace merkle
     /// @brief Deserialises a Hash from a vector of bytes
     /// @param bytes Vector to read the hash value from
     /// @param position Position of the first byte in @p bytes
-    HashT<SIZE>(const std::vector<uint8_t>& bytes, size_t& position)
+    HashT(const std::vector<uint8_t>& bytes, size_t& position)
     {
       if (bytes.size() - position < SIZE)
         throw std::runtime_error("not enough bytes");
@@ -142,7 +142,7 @@ namespace merkle
 
     /// @brief Deserialises a Hash from an array of bytes
     /// @param bytes Array to read the hash value from
-    HashT<SIZE>(const std::array<uint8_t, SIZE>& bytes)
+    HashT(const std::array<uint8_t, SIZE>& bytes)
     {
       std::copy(bytes.data(), bytes.data() + SIZE, this->bytes);
     }
@@ -182,20 +182,20 @@ namespace merkle
     }
 
     /// @brief Hash assignment operator
-    HashT<SIZE> operator=(const HashT<SIZE>& other)
+    HashT operator=(const HashT& other)
     {
       std::copy(other.bytes, other.bytes + SIZE, bytes);
       return *this;
     }
 
     /// @brief Hash equality operator
-    bool operator==(const HashT<SIZE>& other) const
+    bool operator==(const HashT& other) const
     {
       return memcmp(bytes, other.bytes, SIZE) == 0;
     }
 
     /// @brief Hash inequality operator
-    bool operator!=(const HashT<SIZE>& other) const
+    bool operator!=(const HashT& other) const
     {
       return memcmp(bytes, other.bytes, SIZE) != 0;
     }
