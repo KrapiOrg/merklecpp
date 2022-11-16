@@ -1881,45 +1881,6 @@ namespace merkle
   }
   // clang-format on
 
-#ifdef HAVE_OPENSSL
-  /// @brief OpenSSL's SHA256 compression function
-  /// @param l Left node hash
-  /// @param r Right node hash
-  /// @param out Output node hash
-  /// @note Some versions of OpenSSL may not provide SHA256_Transform.
-  static inline void sha256_compress_openssl(
-    const HashT<32>& l, const HashT<32>& r, HashT<32>& out)
-  {
-    unsigned char block[32 * 2];
-    memcpy(&block[0], l.bytes, 32);
-    memcpy(&block[32], r.bytes, 32);
-
-    SHA256_CTX ctx;
-    if (SHA256_Init(&ctx) != 1)
-      printf("SHA256_Init error");
-    SHA256_Transform(&ctx, &block[0]);
-
-    for (int i = 0; i < 8; i++)
-      ((uint32_t*)out.bytes)[i] = convert_endianness(((uint32_t*)ctx.h)[i]);
-  }
-
-  /// @brief OpenSSL SHA256
-  /// @param l Left node hash
-  /// @param r Right node hash
-  /// @param out Output node hash
-  /// @note Some versions of OpenSSL may not provide SHA256_Transform.
-  static inline void sha256_openssl(
-    const merkle::HashT<32>& l,
-    const merkle::HashT<32>& r,
-    merkle::HashT<32>& out)
-  {
-    uint8_t block[32 * 2];
-    memcpy(&block[0], l.bytes, 32);
-    memcpy(&block[32], r.bytes, 32);
-    SHA256(block, sizeof(block), out.bytes);
-  }
-#endif
-
 #ifdef HAVE_MBEDTLS
   /// @brief mbedTLS SHA256 compression function
   /// @param l Left node hash
